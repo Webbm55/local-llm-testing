@@ -2,6 +2,7 @@
 #include <string.h>
 #include <time.h>
 
+// ZodiacSign struct represents a zodiac sign with its start and end dates.
 typedef struct {
     char sign[20];
     int start_month;
@@ -10,6 +11,7 @@ typedef struct {
     int end_day;
 } ZodiacSign;
 
+// Array of zodiac signs with their date ranges.
 const ZodiacSign zodiac_dates[] = {
     {"Capricorn", 12, 22, 1, 19},
     {"Aquarius", 1, 20, 2, 18},
@@ -25,6 +27,8 @@ const ZodiacSign zodiac_dates[] = {
     {"Sagittarius", 11, 22, 12, 21}
 };
 
+// Function to determine the zodiac sign based on the given month and day.
+// It loops through the zodiac_dates array and checks if the given date falls within any sign's range.
 char* get_zodiac_sign(int month, int day) {
     for (int i = 0; i < 12; i++) {
         if (zodiac_dates[i].start_month == zodiac_dates[i].end_month) {
@@ -49,21 +53,24 @@ int main() {
     int year, month, day;
     int age;
     
+    // Prompt user for their name.
     printf("What is your name? ");
     fgets(name, sizeof(name), stdin);
     name[strcspn(name, "\n")] = '\0';  // Remove newline
     
+    // Prompt user for their date of birth in yyyyMMdd format.
     printf("What is your date of birth? (Enter in yyyyMMdd format) ");
     scanf("%8s", dob_input);
     
-    // Parse the date of birth
+    // Parse the date of birth.
+    // If parsing fails or date is invalid, print error message.
     if (sscanf(dob_input, "%4d%2d%2d", &year, &month, &day) != 3 ||
         month < 1 || month > 12 || day < 1 || day > 31) {
         printf("Invalid date format. Please use yyyyMMdd format.\n");
         return 1;
     }
     
-    // Calculate age
+    // Calculate age based on current date.
     time_t now = time(NULL);
     struct tm *today = localtime(&now);
     
@@ -73,9 +80,10 @@ int main() {
         age--;
     }
     
-    // Determine zodiac sign
+    // Determine zodiac sign.
     char *sign = get_zodiac_sign(month, day);
     
+    // Print result.
     if (sign != NULL) {
         printf("Hello, %s! You are %d years old. Your zodiac sign is %s!\n", name, age, sign);
     } else {
